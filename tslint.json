@@ -1,0 +1,12 @@
+{
+  "extends": "tslint-config-standard",
+  "rules": {
+    "semicolon": [true, "always"],
+    "quotemark": [
+      true,
+      "single",
+      "avoid-escape",
+      "jsx-double"
+    ]
+  }
+}
