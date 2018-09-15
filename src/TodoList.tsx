@@ -11,14 +11,23 @@ interface TodoListState {
 
 export class TodoList extends React.Component<TodoListProps, TodoListState> {
   private store: TodoStore = new TodoStore();
+  private toggleTodo: (todo: Todo) => void;
 
   constructor (props: TodoListProps) {
     super(props);
+    this.state = {
+      todos: []
+    };
+    this.store.onChange(store => {
+      this.setState({ todos: this.store.todos });
+    });
+
+    this.toggleTodo = this.store.toggleTodo.bind(this.store);
+  }
+
+  componentDidMount () {
     this.store.addTodo('hello');
     this.store.addTodo('Les gens');
-    this.state = {
-      todos: this.store.todos
-    };
   }
 
   render () {
@@ -39,7 +48,9 @@ export class TodoList extends React.Component<TodoListProps, TodoListState> {
 
         <ul id="sortable" className="list-unstyled ui-sortable">
           {todos.map(todo => {
-            return <TodoItem todo={todo} key={todo.id}/>;
+            return (
+              <TodoItem todo={todo} key={todo.id} onToggle={this.toggleTodo} />
+            );
           })}
         </ul>
 
